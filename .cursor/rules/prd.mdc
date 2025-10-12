@@ -1,0 +1,55 @@
+---
+alwaysApply: true
+---
+
+# Someverse
+'Someverse' is a taste-based social matching (dating) platform that leverages pop-culture content consumption data. 
+By comprehensively analyzing each user's activity across multiple media services (e.g., Netflix, Melon, Megabox, Millie's Library), Someverse matches people with similar preferences and generates a 'taste data' profile that captures individual identity. 
+This fulfills the 20-30-something generation's desire to share and empathize over their tastes, while pioneering a new realm of online human connections.
+
+## Tech Stack
+- framework: flutter
+- language: Dart
+- Architecture: Clean Architecture
+- state management: Riverpod
+- router: go_router
+- DI (Dependency Injection): Riverpod
+- HTTP client: dio
+- immutable models: freezed
+- local storage: shared_preferences, flutter_secure_storage
+- test: mocktail
+
+## Feature
+- onboarding:
+    - 영화와 음악 취향 선택
+    - 닉네임 / 성별 / 생년월일 / 주 활동 지역 / 프로필 사진 입력
+
+- login: 
+    - 소셜 로그인: iOS(애플, 구글, 카카오), Android(구글, 카카오)
+
+- myPage:
+
+- feed:
+
+- chat:
+
+- matching:
+
+## Project Structure
+```bash
+lib/
+├── core/           # App-wide utilities
+│   ├── constants/  # Colors, text styles, etc.
+│   ├── themes/     # Theme-related files
+│   └── utils/      # Common utilities
+├── features/       # Separated by feature!
+│   ├── auth/       # Login/registration
+│   │   ├── data/
+│   │   ├── domain/
+│   │   └── presentation/
+│   └── home/       # Home screen
+├── shared/         # Reusable components
+│   ├── widgets/    # Common widgets
+│   └── services/   # Common services
+└── main.dart
+```

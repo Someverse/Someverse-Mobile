@@ -1,3 +1,7 @@
+---
+alwaysApply: true
+---
+
 # Riverpod Rules
 
 ### Using Ref in Riverpod
@@ -184,8 +188,3 @@
 14. Use the `overrides` parameter to swap out Notifiers or providers for mocks or fakes in tests.
 15. Keep all test-specific setup and teardown logic inside the test body or test utility functions. Avoid global state.
 16. Ensure your test environment closely matches your production environment for reliable results.
-
-
----
-alwaysApply: true
----

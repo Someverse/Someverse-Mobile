@@ -1,3 +1,7 @@
+---
+alwaysApply: true
+---
+
 # Effective Dart Rules
 
 ### Naming Conventions
@@ -108,7 +112,3 @@
 2. Avoid expensive operations in build methods.
 3. Implement pagination for large lists.
 
-
----
-alwaysApply: true
----
