@@ -11,9 +11,9 @@ This fulfills the 20-30-something generation's desire to share and empathize ove
 - framework: flutter
 - language: Dart
 - Architecture: Clean Architecture
-- state management: Riverpod
+- state management: Provider
 - router: go_router
-- DI (Dependency Injection): Riverpod
+- DI (Dependency Injection): get_it, injectable
 - HTTP client: dio
 - immutable models: freezed
 - local storage: shared_preferences, flutter_secure_storage
@@ -38,18 +38,36 @@ This fulfills the 20-30-something generation's desire to share and empathize ove
 ## Project Structure
 ```bash
 lib/
-├── core/           # App-wide utilities
-│   ├── constants/  # Colors, text styles, etc.
-│   ├── themes/     # Theme-related files
-│   └── utils/      # Common utilities
-├── features/       # Separated by feature!
-│   ├── auth/       # Login/registration
+├── core/                   # 앱 전반에서 사용되는 유틸리티
+│   ├── config/            # 앱 설정 (환경 변수, API 엔드포인트 등)
+│   ├── constants/         # 상수 (색상, 텍스트 스타일, 문자열 등)
+│   ├── di/                # 의존성 주입 설정 (get_it, injectable)
+│   ├── router/            # 라우팅 설정 (go_router)
+│   ├── themes/            # 테마 관련 파일
+│   ├── utils/             # 공통 유틸리티 함수
+│   └── widgets/           # 앱 전반에서 사용되는 공통 위젯
+│
+├── features/              # 기능별로 분리된 모듈
+│   ├── auth/             # 인증 기능 (로그인/회원가입)
 │   │   ├── data/
+│   │   │   ├── datasources/    # API 호출, 로컬 저장소 접근
+│   │   │   ├── models/         # JSON 직렬화 모델 (freezed)
+│   │   │   └── repositories/   # Repository 구현체
 │   │   ├── domain/
+│   │   │   ├── entities/       # 비즈니스 엔티티
+│   │   │   ├── repositories/   # Repository 인터페이스
+│   │   │   └── usecases/       # 비즈니스 로직/유스케이스
 │   │   └── presentation/
-│   └── home/       # Home screen
-├── shared/         # Reusable components
-│   ├── widgets/    # Common widgets
-│   └── services/   # Common services
-└── main.dart
+│   │       ├── pages/          # View
+│   │       ├── viewmodels/     # 상태 관리 (ChangeNotifier, ValueNotifier)
+│   │       └── widgets/        # 해당 기능 전용 위젯
+│   │
+│   ├── home/             # 홈 화면
+│   ├── onboarding/       # 온보딩 (취향 선택, 프로필 입력)
+│   ├── my_page/          # 마이페이지
+│   ├── feed/             # 피드
+│   ├── chat/             # 채팅
+│   └── matching/         # 매칭
+│
+└── main.dart            # 앱 진입점
 ```
