@@ -167,10 +167,14 @@ flutter test
 - `build_runner`: 코드 생성
 - `flutter_lints`: Dart/Flutter 린팅
 
+### API 응답 구조 및 상태 코드
+- [api.mdc](.cursor/rules/api.mdc)
+
 ## 참고 문서
 
 - [프로젝트 개요 및 기술 스택](.cursor/rules/prd.mdc)
 - [Flutter/Dart 개발 가이드](.cursor/rules/flutter-guide.mdc)
 - [Effective Dart 규칙](.cursor/rules/effective-dart.mdc)
 - [Mocktail 테스트 가이드](.cursor/rules/mocktail.mdc)
+- [API 응답 구조 및 상태 코드](.cursor/rules/api.mdc)
 
