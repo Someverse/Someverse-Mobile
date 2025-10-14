@@ -1,0 +1,13 @@
+---
+alwaysApply: true
+---
+
+# API 응답 구조
+```json
+{
+  "success": true,
+  "code": "SUCCESS",
+  "message": "정상 처리되었습니다.",
+  "data": { ... }
+}
+```

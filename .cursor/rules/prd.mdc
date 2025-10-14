@@ -21,17 +21,30 @@ This fulfills the 20-30-something generation's desire to share and empathize ove
 
 ## Feature
 - onboarding:
-    - 영화와 음악 취향 선택
-    - 닉네임 / 성별 / 생년월일 / 주 활동 지역 / 프로필 사진 입력
+    - 영화 취향 선택: 
+        - 카테고리 최대 5개 선택
+        - 최소 5개 이상의 작품 선택
+    - 닉네임: 한글 최소 2자, 최대 8자
+    - 성별: 남 / 녀
+    - 생년월일: yyyy-mm-dd
+    - 활동지역: 최소 1개, 최대 2개
+    - 프로필 사진: 최소 1장, 최대 6장
 
 - login: 
-    - 소셜 로그인: iOS(애플, 구글, 카카오), Android(구글, 카카오)
+    - 소셜 로그인: iOS(애플, 카카오), Android(카카오)
+
 
 - myPage:
 
 - feed:
+    - 다른 유저의 피드 노출
+    - 피드 작성(영화 감상평)
+
+- user's profile:
+    - 선호 콘텐츠/장르 표시
 
 - chat:
+    - 1:1 채팅
 
 - matching:
 
