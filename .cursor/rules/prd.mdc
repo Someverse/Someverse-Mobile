@@ -11,9 +11,9 @@ This fulfills the 20-30-something generation's desire to share and empathize ove
 - framework: flutter
 - language: Dart
 - Architecture: Clean Architecture
-- state management: Provider
+- state management: Riverpod
 - router: go_router
-- DI (Dependency Injection): get_it, injectable
+- DI (Dependency Injection): Riverpod (built-in)
 - HTTP client: dio
 - immutable models: freezed
 - local storage: shared_preferences, flutter_secure_storage
@@ -72,7 +72,7 @@ lib/
 │   │   │   └── usecases/       # 비즈니스 로직/유스케이스
 │   │   └── presentation/
 │   │       ├── pages/          # View
-│   │       ├── viewmodels/     # 상태 관리 (ChangeNotifier, ValueNotifier)
+│   │       ├── providers/      # Riverpod Provider 정의
 │   │       └── widgets/        # 해당 기능 전용 위젯
 │   │
 │   ├── home/             # 홈 화면

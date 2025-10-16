@@ -170,42 +170,168 @@ linter:
 ```
 
 ### State Management
-* **Built-in Solutions:** Prefer Flutter's built-in state management solutions.
-  Do not use a third-party package unless explicitly requested.
-* **Streams:** Use `Streams` and `StreamBuilder` for handling a sequence of
-  asynchronous events.
-* **Futures:** Use `Futures` and `FutureBuilder` for handling a single
-  asynchronous operation that will complete in the future.
-* **ValueNotifier:** Use `ValueNotifier` with `ValueListenableBuilder` for
-  simple, local state that involves a single value.
+* **Riverpod 3.0:** Use Riverpod 3.0 as the primary state management solution.
+  Riverpod provides compile-time safety, better testability, automatic disposal,
+  and eliminates common Provider pitfalls.
+* **Code Generation:** Prefer code generation with `@riverpod` annotation for
+  type safety and better developer experience. Use `riverpod_generator` and
+  `riverpod_annotation`.
+* **Provider Types:**
+  * **@riverpod:** For any provider with code generation (recommended).
+  * **Notifier/AsyncNotifier:** For stateful logic (replaces StateNotifier).
+  * **FutureProvider:** For asynchronous operations that complete once.
+  * **StreamProvider:** For sequences of asynchronous events.
+* **Dependency Injection:** Use Riverpod's built-in DI capabilities. Providers can
+  depend on other providers via `ref`, making dependencies explicit and testable.
 
   ```dart
-  // Define a ValueNotifier to hold the state.
-  final ValueNotifier<int> _counter = ValueNotifier<int>(0);
+  // 1. Simple provider with code generation
+  import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-  // Use ValueListenableBuilder to listen and rebuild.
-  ValueListenableBuilder<int>(
-    valueListenable: _counter,
-    builder: (context, value, child) {
-      return Text('Count: $value');
-    },
-  );
-    ```
+  part 'counter.g.dart';
 
-* **ChangeNotifier:** For state that is more complex or shared across multiple
-  widgets, use `ChangeNotifier`.
-* **ListenableBuilder:** Use `ListenableBuilder` to listen to changes from a
-  `ChangeNotifier` or other `Listenable`.
-* **MVVM:** When a more robust solution is needed, structure the app using the
-  Model-View-ViewModel (MVVM) pattern.
-* **Dependency Injection:** Use simple manual constructor dependency injection
-  to make a class's dependencies explicit in its API, and to manage dependencies
-  between different layers of the application.
-* **Provider:** If a dependency injection solution beyond manual constructor
-  injection is explicitly requested, `provider` can be used to make services,
-  repositories, or complex state objects available to the UI layer without tight
-  coupling (note: this document generally defaults against third-party packages
-  for state management unless explicitly requested).
+  @riverpod
+  class Counter extends _$Counter {
+    @override
+    int build() => 0;
+
+    void increment() => state++;
+    void decrement() => state--;
+  }
+
+  // 2. Use ConsumerWidget to read the provider
+  class CounterPage extends ConsumerWidget {
+    const CounterPage({super.key});
+
+    @override
+    Widget build(BuildContext context, WidgetRef ref) {
+      final count = ref.watch(counterProvider);
+      return Column(
+        children: [
+          Text('Count: $count'),
+          ElevatedButton(
+            onPressed: () => ref.read(counterProvider.notifier).increment(),
+            child: const Text('Increment'),
+          ),
+        ],
+      );
+    }
+  }
+  ```
+
+* **Async Provider Pattern:** For asynchronous operations, use `AsyncNotifier`
+  with freezed for immutable state classes.
+
+  ```dart
+  // 1. Define an immutable state class with freezed
+  @freezed
+  class TodoState with _$TodoState {
+    const factory TodoState({
+      required List<Todo> todos,
+      required bool isLoading,
+    }) = _TodoState;
+  }
+
+  // 2. Create an AsyncNotifier with @riverpod
+  @riverpod
+  class TodoList extends _$TodoList {
+    @override
+    Future<List<Todo>> build() async {
+      // Initial async load
+      return await _fetchTodos();
+    }
+
+    Future<void> addTodo(Todo todo) async {
+      state = const AsyncValue.loading();
+      state = await AsyncValue.guard(() async {
+        final todos = await future;
+        await _saveTodo(todo);
+        return [...todos, todo];
+      });
+    }
+  }
+
+  // 3. Use in widget
+  class TodoListWidget extends ConsumerWidget {
+    const TodoListWidget({super.key});
+
+    @override
+    Widget build(BuildContext context, WidgetRef ref) {
+      final asyncTodos = ref.watch(todoListProvider);
+      
+      return asyncTodos.when(
+        data: (todos) => ListView.builder(
+          itemCount: todos.length,
+          itemBuilder: (context, index) => TodoItem(todo: todos[index]),
+        ),
+        loading: () => const CircularProgressIndicator(),
+        error: (error, stack) => Text('Error: $error'),
+      );
+    }
+  }
+  ```
+
+* **Provider Dependencies:** Providers can depend on other providers using `ref`.
+
+  ```dart
+  @riverpod
+  Repository repository(RepositoryRef ref) {
+    final dio = ref.watch(dioProvider);
+    return Repository(dio);
+  }
+
+  @riverpod
+  class UserProfile extends _$UserProfile {
+    @override
+    Future<User> build(String userId) async {
+      final repository = ref.watch(repositoryProvider);
+      return repository.fetchUser(userId);
+    }
+  }
+  ```
+
+* **Testing:** Riverpod makes testing easy with `ProviderContainer` and overrides.
+
+  ```dart
+  test('counter increments', () {
+    final container = ProviderContainer();
+    addTearDown(container.dispose);
+    
+    expect(container.read(counterProvider), 0);
+    container.read(counterProvider.notifier).increment();
+    expect(container.read(counterProvider), 1);
+  });
+
+  test('todo list with mock repository', () async {
+    final container = ProviderContainer(
+      overrides: [
+        repositoryProvider.overrideWithValue(MockRepository()),
+      ],
+    );
+    addTearDown(container.dispose);
+
+    final todos = await container.read(todoListProvider.future);
+    expect(todos, isNotEmpty);
+  });
+  ```
+
+* **App Setup:** Wrap your app with `ProviderScope` to enable Riverpod.
+
+  ```dart
+  void main() {
+    runApp(
+      const ProviderScope(
+        child: MyApp(),
+      ),
+    );
+  }
+  ```
+
+* **Code Generation:** Run build_runner after creating or modifying providers.
+
+  ```shell
+  dart run build_runner watch --delete-conflicting-outputs
+  ```
 
 ### Data Flow
 * **Data Structures:** Define data structures (classes) to represent the data
@@ -483,8 +609,8 @@ Image.network(
   ensure consistency.
 * **Dark/Light Mode and Theme Toggle:** Implement support for both light and
   dark themes using `theme` and `darkTheme` properties of `MaterialApp`. The
-  `themeMode` property can be dynamically controlled (e.g., via a
-  `ChangeNotifierProvider`) to allow for toggling between `ThemeMode.light`,
+  `themeMode` property can be dynamically controlled (e.g., via a Riverpod
+  `StateProvider`) to allow for toggling between `ThemeMode.light`,
   `ThemeMode.dark`, or `ThemeMode.system`.
 
 ```dart

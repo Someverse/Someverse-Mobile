@@ -28,7 +28,7 @@ lib/
 │   │   │   └── usecases/       # 비즈니스 로직/유스케이스
 │   │   └── presentation/
 │   │       ├── pages/          # View
-│   │       ├── viewmodels/     # 상태 관리 (ChangeNotifier, ValueNotifier)
+│   │       ├── providers/      # Riverpod Provider 정의
 │   │       └── widgets/        # 해당 기능 전용 위젯
 │   │
 │   ├── home/             # 홈 화면
@@ -46,8 +46,8 @@ lib/
 #### Clean Architecture 레이어
 1. **Presentation Layer** (`presentation/`)
    - UI 위젯 및 상태 관리
-   - Provider를 사용한 MVVM 패턴
-   - ChangeNotifier 기반 ViewModel
+   - Riverpod 3.0을 사용한 Provider 패턴
+   - Notifier/AsyncNotifier 기반 상태 관리 (코드 생성 활용)
 
 2. **Domain Layer** (`domain/`)
    - 비즈니스 로직 및 엔티티
@@ -71,7 +71,7 @@ Flutter/Dart 코딩 스타일, 베스트 프랙티스, 앱 아키텍처 패턴�
 
 주요 내용:
 - Flutter 베스트 프랙티스
-- 상태 관리 (Provider)
+- 상태 관리 (Riverpod)
 - 라우팅 (go_router)
 - 테마 및 디자인 시스템
 - UI/UX 가이드라인
@@ -102,7 +102,7 @@ test/
 │   │   ├── domain/
 │   │   │   └── usecases/
 │   │   └── presentation/
-│   │       └── viewmodels/
+│   │       └── providers/
 │   └── ...
 ├── shared/
 └── widget_test.dart
@@ -128,13 +128,17 @@ lib/features/[feature_name]/
 │   └── usecases/
 └── presentation/
     ├── pages/
-    ├── viewmodels/
+    ├── providers/
     └── widgets/
 ```
 
 ### 2. 코드 생성
 ```bash
-# Freezed, json_serializable 등의 코드 생성
+# Riverpod, Freezed, json_serializable 등의 코드 생성
+# 개발 중에는 watch 모드 사용 권장
+dart run build_runner watch --delete-conflicting-outputs
+
+# 또는 일회성 빌드
 dart run build_runner build --delete-conflicting-outputs
 ```
 
@@ -151,8 +155,9 @@ flutter test
 ## 주요 패키지
 
 ### 핵심 패키지
-- `provider`: 상태 관리
-- `get_it` / `injectable`: 의존성 주입 (DI)
+- `flutter_riverpod`: 상태 관리 및 의존성 주입 (Riverpod 3.0)
+- `riverpod_annotation`: Riverpod 코드 생성용 어노테이션
+- `riverpod_generator`: Riverpod 코드 생성기
 - `go_router`: 선언적 라우팅
 - `dio`: HTTP 클라이언트
 - `freezed`: 불변 모델 생성
