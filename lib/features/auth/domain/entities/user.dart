@@ -7,7 +7,7 @@ part 'user.freezed.dart';
 /// 이 클래스는 비즈니스 로직에서 사용되는 사용자 정보를 담고 있으며,
 /// 데이터 레이어의 모델과는 독립적입니다.
 @freezed
-class User with _$User {
+abstract class User with _$User {
   const User._();
 
   const factory User({
@@ -131,4 +131,3 @@ enum SocialProvider {
     }
   }
 }
-

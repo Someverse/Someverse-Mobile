@@ -6,7 +6,7 @@ part 'region.freezed.dart';
 ///
 /// 온보딩 과정에서 사용자가 활동 지역을 선택할 때 사용됩니다.
 @freezed
-class Region with _$Region {
+abstract class Region with _$Region {
   const Region._();
 
   const factory Region({

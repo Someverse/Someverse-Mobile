@@ -6,7 +6,7 @@ part 'movie_content.freezed.dart';
 ///
 /// 온보딩 과정에서 사용자가 선호하는 영화 작품을 선택할 때 사용됩니다.
 @freezed
-class MovieContent with _$MovieContent {
+abstract class MovieContent with _$MovieContent {
   const factory MovieContent({
     /// 영화 고유 식별자
     required String id,

@@ -6,7 +6,7 @@ part 'movie_category.freezed.dart';
 ///
 /// 온보딩 과정에서 사용자가 선호하는 영화 장르를 선택할 때 사용됩니다.
 @freezed
-class MovieCategory with _$MovieCategory {
+abstract class MovieCategory with _$MovieCategory {
   const factory MovieCategory({
     /// 카테고리 고유 식별자
     required String id,

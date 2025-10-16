@@ -6,7 +6,7 @@ part 'auth_token.freezed.dart';
 ///
 /// 로그인 후 받은 access token과 refresh token을 관리합니다.
 @freezed
-class AuthToken with _$AuthToken {
+abstract class AuthToken with _$AuthToken {
   const AuthToken._();
 
   const factory AuthToken({
@@ -48,4 +48,3 @@ class AuthToken with _$AuthToken {
   /// Authorization 헤더 값을 반환합니다.
   String get authorizationHeader => '$tokenType $accessToken';
 }
-
