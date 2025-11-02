@@ -70,6 +70,9 @@ dev_dependencies:
   # Testing
   mocktail: ^1.0.4
 
+  # 카카오 로그인 API 패키지
+  kakao_flutter_sdk_user: ^1.9.5 
+
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
