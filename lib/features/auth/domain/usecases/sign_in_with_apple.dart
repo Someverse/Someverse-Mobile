@@ -12,11 +12,21 @@ class SignInWithApple {
 
   /// 애플 로그인을 실행합니다.
   ///
+  /// Parameters:
+  /// - identityToken: 애플 SDK에서 받은 identity token
+  /// - authorizationCode: 애플 SDK에서 받은 인가 코드
+  ///
   /// Returns:
   /// - 성공 시: (AuthToken, User) 튜플
   /// - 실패 시: Exception throw
-  Future<(AuthToken, User)> call() async {
-    final (token, user) = await _authRepository.signInWithApple();
+  Future<(AuthToken, User)> call(
+    String identityToken,
+    String authorizationCode,
+  ) async {
+    final (token, user) = await _authRepository.signInWithApple(
+      identityToken,
+      authorizationCode,
+    );
     await _authRepository.saveToken(token);
     return (token, user);
   }

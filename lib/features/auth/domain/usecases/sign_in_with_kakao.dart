@@ -12,11 +12,14 @@ class SignInWithKakao {
 
   /// 카카오 로그인을 실행합니다.
   ///
+  /// Parameters:
+  /// - authorizationCode: 카카오 SDK에서 받은 인가 코드
+  ///
   /// Returns:
   /// - 성공 시: (AuthToken, User) 튜플
   /// - 실패 시: Exception throw
-  Future<(AuthToken, User)> call() async {
-    final (token, user) = await _authRepository.signInWithKakao();
+  Future<(AuthToken, User)> call(String authorizationCode) async {
+    final (token, user) = await _authRepository.signInWithKakao(authorizationCode);
     await _authRepository.saveToken(token);
     return (token, user);
   }
