@@ -1,5 +1,5 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:someverse/core/di/dio_providers.dart';
+import 'package:someverse/core/providers/dio_providers.dart';
 import 'package:someverse/core/services/kakao_auth_service.dart';
 import 'package:someverse/features/auth/data/datasources/auth_datasource.dart';
 import 'package:someverse/features/auth/data/datasources/auth_local_datasource.dart';
