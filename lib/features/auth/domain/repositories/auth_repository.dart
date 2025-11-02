@@ -7,17 +7,27 @@ import 'package:someverse/features/auth/domain/entities/user.dart';
 abstract class AuthRepository {
   /// 카카오 소셜 로그인을 수행합니다.
   ///
-  /// Returns:
-  /// - 성공 시: 인증 토큰과 사용자 정보를 포함한 튜플
-  /// - 실패 시: Exception throw
-  Future<(AuthToken token, User user)> signInWithKakao();
-
-  /// 애플 소셜 로그인을 수행합니다.
+  /// Parameters:
+  /// - authorizationCode: 카카오 SDK에서 받은 인가 코드
   ///
   /// Returns:
   /// - 성공 시: 인증 토큰과 사용자 정보를 포함한 튜플
   /// - 실패 시: Exception throw
-  Future<(AuthToken token, User user)> signInWithApple();
+  Future<(AuthToken token, User user)> signInWithKakao(String authorizationCode);
+
+  /// 애플 소셜 로그인을 수행합니다.
+  ///
+  /// Parameters:
+  /// - identityToken: 애플 SDK에서 받은 identity token
+  /// - authorizationCode: 애플 SDK에서 받은 인가 코드
+  ///
+  /// Returns:
+  /// - 성공 시: 인증 토큰과 사용자 정보를 포함한 튜플
+  /// - 실패 시: Exception throw
+  Future<(AuthToken token, User user)> signInWithApple(
+    String identityToken,
+    String authorizationCode,
+  );
 
   /// 로그아웃을 수행합니다.
   Future<void> signOut();
